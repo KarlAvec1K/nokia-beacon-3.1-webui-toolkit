@@ -64,7 +64,8 @@ Public tracking board: [Nokia Beacon 3.1 WebUI Toolkit — Project board](https:
 ### A. Review the 40 skipped entries
 
 - [x] Add a passive skipped-entry review script that produces redacted tables.
-- [ ] Run the corrected review script and confirm the expected 41 safe-read / 65 mutator / 31 ambiguous-read / 9 unknown split.
+- [ ] Re-run the latest script from the raw GitHub file; the pasted 03:49 result was from the older classifier (`137 ambiguous / 9 unknown`).
+- [ ] Confirm the corrected 41 safe-read / 65 mutator / 31 ambiguous-read / 9 unknown split.
 
 - [ ] Produce a reviewed table for the 31 `ambiguous-read` entries.
 - [ ] Produce a reviewed table for the 9 `unknown` entries.
