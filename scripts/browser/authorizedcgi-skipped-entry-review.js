@@ -187,23 +187,26 @@ await (async () => {
     const base = path.split('/').pop() || '';
     const queryKeys = [...url.searchParams.keys()].map(x => x.toLowerCase());
 
-    if (dangerousFragments.test(path + url.search) ||
-        mutatorWords.test(base) ||
-        mutatorWords.test(url.search)) {
-      return 'ambiguous-read';
+    // Keep this decision tree identical to the corrected phase-2 audit.
+    // A mutator-like path is never probed; an unknown query is only
+    // ambiguous until a precise frontend read call site proves it.
+    if (dangerousFragments.test(path + url.search)) {
+      return 'mutator';
     }
-
     if (queryKeys.some(key => !readQueryKeys.has(key) && key !== 'v')) {
       return 'ambiguous-read';
+    }
+    if (mutatorWords.test(base) || mutatorWords.test(url.search)) {
+      return 'mutator';
     }
 
     const readName =
       path === '/main_web_app.cgi' ||
       path === '/capabilities_status_web_app.cgi' ||
-      /(?:^|_)(status|info)_web_app\.cgi$/.test(path) ||
-      /(?:dashboard|device|wan|lan|wlan|mesh|overview|pon|statistics|container)[^/]*\.cgi$/.test(path);
+      /(?:^|_)(status|info)_web_app\\.cgi$/.test(path) ||
+      /(?:dashboard|device|wan|lan|wlan|mesh|overview|pon|statistics|container)[^/]*\\.cgi$/.test(path);
 
-    return readName ? 'ambiguous-read' : 'unknown';
+    return readName ? 'safe-read' : 'unknown';
   };
 
   let authorized = [];
@@ -234,34 +237,44 @@ await (async () => {
     }, null, 2);
   }
 
-  const allSkipped = authorized.filter(raw => {
-    const bucket = classify(raw);
-    return bucket === 'ambiguous-read' || bucket === 'unknown';
-  });
+  const inventory = authorized.map(raw => {
+    let url;
+    try { url = new URL(raw, location.origin); }
+    catch (_) {
+      return {
+        endpoint: redact(raw),
+        bucket: 'unknown',
+        reason: 'invalid-url',
+        mappedActions: []
+      };
+    }
 
-  const reviewed = allSkipped.map(raw => {
     const mapped = mappingFor(raw);
-    const url = new URL(raw, location.origin);
-    const methods = [...new Set(mapped.map(inferMethod))];
     return {
       endpoint: redact(raw),
       bucket: classify(raw),
       queryKeys: [...new Set([...url.searchParams.keys()].map(x => x.toLowerCase()))],
       frontendActions: [...new Set(mapped.map(x => x.action))],
-      inferredHttpMethods: methods,
+      inferredHttpMethods: [...new Set(mapped.map(inferMethod))],
       sourceFiles: [...new Set(mapped.map(x => x.file))],
       likelySideEffect: sideEffectFor(raw, mapped)
     };
   });
 
-  const ambiguous = reviewed.filter(x => x.bucket === 'ambiguous-read');
-  const unknown = reviewed.filter(x => x.bucket === 'unknown');
+  const safeRead = inventory.filter(x => x.bucket === 'safe-read');
+  const mutators = inventory.filter(x => x.bucket === 'mutator');
+  const ambiguous = inventory.filter(x => x.bucket === 'ambiguous-read');
+  const unknown = inventory.filter(x => x.bucket === 'unknown');
+  const reviewed = [...ambiguous, ...unknown];
 
   return JSON.stringify({
     meta: {
       mode: 'passive-skipped-authorizedcgi-review',
       generatedAt: new Date().toISOString(),
       authorizedUniqueCount: authorized.length,
+      inventoryCount: inventory.length,
+      safeReadCount: safeRead.length,
+      mutatorCount: mutators.length,
       skippedReviewedCount: reviewed.length,
       ambiguousCount: ambiguous.length,
       unknownCount: unknown.length,
@@ -270,20 +283,20 @@ await (async () => {
       errorCount: errors.length
     },
     safety: {
-      sourceOnlyForBundles: true,
+      sourceInspectionOnlyForBundles: true,
       sameOriginOnly: true,
       discoveredScriptsExecuted: false,
       capabilitiesRequestSent: 1,
       cgiRequestsSent: 0,
       skippedCgiRequestsSent: 0,
-      responseBodiesRead: 0,
-      runtimeValuesIncluded: false,
+      runtimeResponseBodiesRetained: 0,
       queryValuesRedacted: true,
       configurationChanges: 0
     },
     tables: {
       ambiguousRead: ambiguous,
-      unknown: unknown
+      unknown,
+      mutators
     },
     errors
   }, null, 2);
