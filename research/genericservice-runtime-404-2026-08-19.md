@@ -1,4 +1,4 @@
-# GenericService runtime result — 2026-08-19
+# Nokia Beacon 3.1 — Research: GenericService Runtime 404 (2026-08-19)
 
 A frontend-shaped POST to `service_function_web_app.cgi` using the `Nokia.GenericService` envelope returned HTTP 404 on the tested Beacon 3.1.
 
