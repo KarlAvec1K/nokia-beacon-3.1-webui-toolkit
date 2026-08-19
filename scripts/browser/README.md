@@ -32,7 +32,7 @@ To build redacted tables for the ambiguous and unknown authorized-CGI entries wi
 
 - [authorizedcgi-skipped-entry-review.js](authorizedcgi-skipped-entry-review.js)
 
-The output separates entries into ambiguousRead and unknown, and reports query keys, frontend action names, inferred HTTP methods, source files, and likely side effects. It sends zero requests to the skipped CGI routes.
+The output uses the same corrected bucket rules as the phase-2 audit: safe-read entries are excluded, mutator-like entries are placed in a separate `mutators` table, and only the 31 `ambiguousRead` plus 9 `unknown` entries form the reviewed tables. Each reviewed row reports query keys, frontend action names, inferred HTTP methods, source files, and likely side effects. It sends zero requests to the skipped CGI routes.
 
 ## Do not automate
 
