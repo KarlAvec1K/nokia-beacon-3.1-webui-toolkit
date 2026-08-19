@@ -1,4 +1,4 @@
-# Hidden 5 GHz OFDMA
+# Nokia Beacon 3.1 — Hidden 5 GHz OFDMA
 
 ## Status
 
