@@ -175,3 +175,22 @@ The menu is calculated dynamically and depends on several conditions:
 The route's hidden state is therefore consistent with product/mode/application conflict logic rather than a dedicated admin route guard.
 
 A separate passive inspection is needed to determine how `showContainerPage` is populated and whether that decision depends on the unavailable GenericService/UBUS path.
+
+
+## Container visibility decision — final classification
+
+A second static pass resolves the remaining ambiguity:
+
+- `showContainerPage` is assigned directly from the product configuration flag for container-management support;
+- it is not derived from GenericService or UBUS;
+- the observed UBUS helper is FWA-only and requests APN information, so it is unrelated to container visibility;
+- `hidePagesForBridgeMode` follows the runtime bridge/AP-mode indicator;
+- bridge/AP mode directly suppresses the container menu in the current deployment;
+- outside bridge mode, parental-control mode, completion of the container-status read, F-Secure state, and unit presence further affect visibility;
+- F-Secure activity is inferred from active execution units whose names contain the bundled SENSE/GRYPHON identifiers.
+
+This closes the container-management branch: the read backend and product support are present, while the WebUI intentionally hides the informational page in the current AP/bridge deployment. No dedicated superadmin gate and no container lifecycle action were found in the inspected frontend. The GenericService/UBUS 404 is not the cause of this menu decision.
+
+## Next passive step
+
+Map the RRM/network-optimization feature statically. The mesh read model exposes an `rrm_enable` field, but no write endpoint should be invoked. The next inventory must only classify product flags, menu/route visibility, read paths, write-path names, payload construction, and UI side effects from downloaded JavaScript source.
