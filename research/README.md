@@ -26,3 +26,4 @@ This folder contains dated evidence, not general user instructions.
 - [STA Information Classification](sta-information-static-classification-2026-08-19.md)
 - [Command-CGI Passive Scan](command-cgi-passive-scan-2026-08-19.md)
 - [Frontend Command-Service Notes](frontend-command-service-notes.md)
+- [Password and Role Source Inventory](password-role-source-inventory-2026-08-19.md)
