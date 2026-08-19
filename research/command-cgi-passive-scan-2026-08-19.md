@@ -2,11 +2,32 @@
 
 ## Result
 
-A passive scan of the JavaScript resources currently loaded by the Nokia Beacon 3.1 WebUI found:
+Two passive scans were performed without contacting `command_web_app.cgi`.
+
+### Loaded-resource scan
 
 - 8 JavaScript files scanned
-- 14 hits related to the command CGI wrappers/mappings
-- 0 literal arguments passed to `invokeShellExistCommand`, `invokeShellCatCommand`, or `invokeShellCatCommandFWA`
+- 14 wrapper/mapping/error-handling hits
+- 0 literal command arguments
+
+### Recursive same-origin scan
+
+- 19 JavaScript URLs discovered
+- 18 JavaScript files fetched
+- 0 call sites
+- 0 literal arguments
+- 2 `.cmd` string matches
+- 1 non-critical fetch error: `zone.js` returned HTTP 404
+- 0 command CGI requests sent
+- downloaded scripts were not executed
+
+Both `.cmd` matches are template fragments inside the generic wrapper definitions in `chunk-TFGNHVAU.js`:
+
+```text
+<argument>.cmd
+```
+
+They are not concrete command names.
 
 ## Confirmed frontend mappings
 
@@ -24,19 +45,17 @@ invokeShellCatCommandFWA(n)
   command_web_app.cgi?catFWA+<n>.cmd
 ```
 
-The scan only found the API wrapper definitions, route map, enum/action names, and generic error handling. It did **not** find a real page/component calling these methods with a concrete command name.
+## Interpretation
 
-## Important interpretation
+The recursively reachable same-origin JavaScript set contains the generic API wrappers but no concrete caller or literal command name. This lowers the likelihood that the Beacon 3.1 WebUI actively uses these CGI operations in its reachable route chunks.
 
-`literalArgumentCount = 0` does **not** prove the command CGI is unused.
+It does not prove that the backend routes are absent. Possible remaining sources include runtime-computed arguments, unreachable or unreferenced chunks, other product variants, and firmware-side artifacts not shipped in the WebUI.
 
-The first scanner only inspected JavaScript files already loaded in the current browser session. The WebUI is an Angular application with lazy-loaded route chunks, so a call site may exist in a chunk that has not yet been fetched by the browser.
-
-The next step is therefore still passive: recursively discover same-origin JavaScript chunk references and inspect all reachable chunks without executing them and without calling `command_web_app.cgi`.
+The `zone.js` 404 does not materially weaken the result: it is a framework dependency name and the queue was otherwise exhausted.
 
 ## Runtime testing policy
 
-Do not send arbitrary values to:
+Do not send invented values to:
 
 ```text
 command_web_app.cgi?pexist+
@@ -44,6 +63,12 @@ command_web_app.cgi?cat+
 command_web_app.cgi?catFWA+
 ```
 
-until a concrete command name is observed in Nokia's own frontend code or another owner-controlled firmware artifact.
+until a concrete command name is observed in Nokia-owned code or another owner-controlled firmware artifact. The argument namespace and side effects remain unknown even though the current admin role advertises some of these routes.
 
-These names strongly suggest an interface to pre-defined shell/command files. Even if the current admin role lists the `pexist` and `cat` routes, the accepted argument namespace and side effects remain unknown.
+## Next passive step
+
+Pivot away from runtime probing of the command CGI. Continue with one of:
+
+1. inventory route definitions, lazy-load maps, feature flags, and access-control metadata across the fetched bundles;
+2. search owner-controlled firmware/static artifacts for concrete `.cmd` names;
+3. compare admin-visible routes with frontend route guards and superadmin-only identifiers.
