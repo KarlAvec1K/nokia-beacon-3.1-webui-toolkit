@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security vulnerability reporting
+    url: https://github.com/KarlAvec1K/nokia-beacon-3.1-webui-toolkit/security/advisories/new
+    about: Use private reporting for vulnerabilities instead of posting secrets in a public issue.
