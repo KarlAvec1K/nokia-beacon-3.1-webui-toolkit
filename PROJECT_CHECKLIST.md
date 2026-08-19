@@ -129,7 +129,7 @@ This checklist tracks what has been verified on the current Beacon 3.1 normal-ad
 
 ## Recommended next order
 
-1. Finish the source-derived method/endpoint matrix for the 40 skipped entries.
+1. Use the completed skipped-entry report to select only source-proven, reversible read candidates.
 2. Complete passive command-CGI and GenericService call-site inventories.
 3. Obtain a legitimate admin/superadmin comparison only if available.
 4. Choose at most one reversible hidden setting for a controlled test.
