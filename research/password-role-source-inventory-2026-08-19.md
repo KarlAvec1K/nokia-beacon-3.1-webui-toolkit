@@ -49,3 +49,15 @@ These are frontend role and UI-state indicators. They do not prove that a supera
 3. The `set_fwa_password` mapping belongs to a shared product surface and is not evidence that the Beacon supports that operation.
 4. No password or privilege endpoint should be called from an inventory script.
 5. Further work should remain passive unless an official, documented recovery procedure is used on a spare device.
+
+## Role terminology hypothesis
+
+The firmware may use a two-level Beacon model in which:
+
+- **Admin** is the highest role exposed by the Beacon WebUI;
+- **User** is the lower or restricted role;
+- **superadmin** is a shared Nokia/FWA/cellular product term that is not necessarily implemented on this Beacon.
+
+The source supports the first two labels: the login response field `is_ctc_admin` drives the client-side `Admin` versus `User` mode. It does not establish that `Admin` is equivalent to a backend `superadmin` role. The single `superadmin` literal is in a shared product module and is insufficient to identify an account, credential, or privilege boundary on this device.
+
+This hypothesis should be tested only through non-secret metadata and documented firmware behavior. Do not infer equivalence from a UI label or attempt to change a role value client-side.
