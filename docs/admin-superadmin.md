@@ -1,62 +1,71 @@
-# Admin vs. superadmin
+# Normal admin versus superadmin
 
-The Beacon 3.1 WebUI separates at least three concepts that should not be confused:
+The WebUI exposes three separate layers. They must not be treated as the same permission system.
 
-1. **Product support** — whether the hardware/firmware implements a feature.
-2. **UI capability / operator policy** — whether the WebUI exposes that feature to the logged-in role/operator profile.
-3. **Backend acceptance** — whether the CGI actually accepts a setting from the current authenticated session.
+1. **Product support**: the firmware and hardware implement a feature.
+2. **UI capability**: the operator profile decides whether a page or control is visible or disabled.
+3. **Backend behavior**: the CGI accepts, rejects, ignores, or delays a request for the current session and operating mode.
 
-A feature can therefore be:
+A feature can therefore be supported but hidden, visible but disabled, readable but not writable, or present in shared JavaScript but unsupported on this device.
 
-- supported and visible,
-- supported but disabled in the UI,
-- supported but hidden in the UI,
-- present in frontend code but rejected by the backend,
-- accepted by the backend even when hidden by the UI.
+## What is verified for the current normal admin
 
-## Capability behavior observed
+Verified hidden writes:
 
-The WebUI capability helper interprets values broadly as:
+- Band Steering;
+- 5 GHz OFDMA.
 
-```text
-1  -> visible/enabled
-0  -> visible but disabled
--1 -> hidden
-```
+Verified reads:
 
-The ProductConfig layer separately reports actual device support, including `SupportBandSteering`, `SupportRRM`, `SupportMimo`, and Wi-Fi generation.
+- capability and main device models;
+- LAN/WLAN, mesh, topology, statistics, work-mode, IPv4 and IPv6 status;
+- container status;
+- STA information shape.
 
-This distinction is important: on the tested Beacon 3.1, OFDMA and Band Steering were not normally exposed but their backend behavior could still be investigated from a normal authenticated local session.
+Observed denial:
 
-## Research goal
+- `radio_receiver_status_web_app.cgi` returned HTTP 403 even though the capability node was present and the CGI appeared in `authorizedcgi`.
 
-Document what an owner can legitimately do when the superadmin credential is unavailable or cannot be recovered.
+Observed unresolved behavior:
 
-Priority areas:
+- `service_function_web_app.cgi` returned 404 to a GET, but the frontend uses POST JSON;
+- `command_web_app.cgi?cat` and `?pexist` are listed, but no argument was tested;
+- RRM, Optimize Network, bridge mode, guest Wi-Fi, mesh changes, and other write paths were not executed in the read-only phase.
 
-- map `authorizedcgi` and role-dependent CGI access;
-- identify hidden pages/routes that are only suppressed in navigation;
-- compare normal-admin vs. superadmin capability responses when samples become available;
-- determine what `service_function_web_app.cgi` exposes;
-- document configuration-backup structure without publishing secrets;
-- identify settings that remain backend-accessible to a normal authenticated administrator;
-- document recovery methods that rely on owner-controlled local access and vendor-supported recovery paths.
+## How to read the evidence
 
-## Non-goals
+- **Hidden** (`-1`) means the UI is suppressing a capability.
+- **Disabled** (`0`) means the UI shows a control but blocks it.
+- **Visible** (`1`) means the UI intends to expose it.
+- **Listed in authorizedcgi** is advisory metadata, not a complete runtime ACL.
+- **HTTP 200** proves transport success, not that a setting was applied.
+- **HTTP 403** is a strong denial signal, but the cause may be role, mode, device applicability, or operator integration.
 
-This repository is not intended for:
+## Admin setting guide
 
-- credential brute force;
-- credential theft;
-- remote authentication bypass;
-- attacking devices the researcher does not own or administer.
+| Area | Current normal-admin status | Guidance |
+|---|---|---|
+| Band Steering | Verified writable | Use the documented Wi-Fi procedure and verify both bands afterward. |
+| 5 GHz OFDMA | Verified writable | Use the documented frontend-compatible flow and verify the 5 GHz status. |
+| RRM / Enhanced Roaming | Frontend write path found, not verified | Do not call automatically; it changes mesh radio behavior. |
+| Optimize Network | Frontend write path found, not verified | Do not call automatically; it can alter channel selection and run for minutes. |
+| Guest Wi-Fi and primary Wi-Fi | Write paths exist | Treat as configuration changes; preserve the current state first. |
+| Mesh add/delete and bridge mode | Write paths exist | Can disconnect nodes or change topology; not part of passive inventory. |
+| Container lifecycle | No lifecycle call sites found | Status is readable; install/start/stop/update actions were not found. |
+| Reboot, factory reset, firmware, passwords | Present in shared frontend | Never include in an automated test. |
 
-Research should be reproducible using a locally owned Beacon 3.1 and an authenticated session whenever possible.
+This table describes evidence from one normal-admin session. It is not a promise that another firmware or operator profile will behave the same way.
 
-## Open questions
+## Recovery rule
 
-- Is `authorizedcgi` generated from role, operator profile, firmware build, or all three?
-- Does AP/bridge mode change backend authorization or only endpoint usefulness?
-- Are hidden UI capability values enforced server-side, or only in JavaScript?
-- Does the Beacon expose a recoverable privileged account through a documented owner recovery workflow?
-- What exact role differences exist between operator-customized firmware builds?
+Before a write:
+
+1. Use a wired connection if possible.
+2. Export or record a known-good configuration.
+3. Change one setting only.
+4. Capture the pre-change status shape.
+5. Perform the vendor/frontend operation.
+6. Re-read the matching status endpoint.
+7. Stop immediately if the UI, LAN, or Wi-Fi becomes unstable.
+
+Do not use hidden routes to bypass authentication or role checks.
