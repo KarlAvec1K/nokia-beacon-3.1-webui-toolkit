@@ -1,4 +1,4 @@
-# Hidden Band Steering
+# Nokia Beacon 3.1 — Hidden Band Steering
 
 ## Status
 
