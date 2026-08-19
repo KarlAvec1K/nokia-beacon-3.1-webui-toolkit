@@ -198,3 +198,44 @@ The simple regular expression did not correctly extract resolver methods contain
 The 47 `loadingStateCheck(...)` findings are component initialization dependencies. They are useful for predicting what a page expects after navigation, but they do not show which calls are made by `y`, `T`, or `O`.
 
 A brace-balanced resolver extraction is required before assigning any automatic request to these resolver aliases.
+
+
+## Brace-balanced resolver extraction
+
+The corrected extractor found exactly three Angular resolver methods plus one Zone.js Promise false positive.
+
+### Header-refresh resolver
+
+```text
+resolve(...) {
+  publish(SHOW_HEADER_REFRESH_BUTTON, true)
+}
+```
+
+This performs no API request.
+
+### First-login credential-change resolver
+
+This resolver reads only the frontend flags:
+
+- `needPasswordModify`
+- `needWifiPwdModify`
+- `needPpoePwdModify`
+
+Depending on those flags, it redirects to login/prelogin and publishes the appropriate first-change event. It performs no CGI/API request and does not change credentials itself.
+
+### Common-data resolver
+
+The third resolver:
+
+1. calls `getDeviceCapability` only when capability data is not already available;
+2. always calls `getHardwareStatus`;
+3. waits for those read operations and logs success or failure.
+
+No other action-like string was found in its balanced method body.
+
+### Separation from the Overview 403
+
+None of the three route resolvers references `get_radio_access_status`. Therefore the observed HTTP 403 for that action originates from the Overview component lifecycle, not from shared route resolution.
+
+The remaining task is to map the minified route aliases `y`, `T`, and `O` to these three resolver implementations through their ES-module import/export aliases.
