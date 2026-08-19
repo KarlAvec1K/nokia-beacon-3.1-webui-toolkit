@@ -47,3 +47,28 @@ This feature is separate from the mesh RRM toggle. It appears capable of initiat
 3. Optimize Network is a second mutating feature with its own capability gate and endpoint.
 4. Neither endpoint should be tested merely to distinguish authorization because the request itself can change radio behavior.
 5. A final targeted source extraction may safely recover exact argument construction and response handling without contacting either endpoint.
+
+
+## Exact method extraction
+
+Brace-balanced extraction recovered the complete relevant methods.
+
+### Enhanced Roaming payload and state recovery
+
+The toggle converts the Boolean choice to the integer `1` or `0` and passes that value as the suffix of the RRM endpoint. Enabling requires an explicit confirmation; disabling proceeds directly.
+
+The request contains no JSON body in this frontend model. It is a CSRF-protected POST whose URL ends with the selected integer. After either success or failure, the page requests mesh status again and replaces the toggle value with the returned `rrm_enable` value. This confirms both the mutation risk and the backend-as-source-of-truth recovery behavior.
+
+### Optimize Network invocation
+
+The optimization method first identifies bands whose automatic-channel setting is disabled:
+
+- if every supported band is manual, it displays an informational warning and does not call the endpoint;
+- if only some bands are manual, it displays a continuation warning listing those bands;
+- otherwise it calls `setNetworkOptimize` and disables the button.
+
+The API method sends a CSRF-protected POST to the OptimizeNetwork endpoint with no explicit request body. The local timer only controls UI availability and messaging; it does not poll or cancel the backend operation.
+
+## Branch status
+
+The RRM and Optimize Network source classification is complete. No runtime authorization probe is warranted because even a bodyless POST can initiate the corresponding configuration change. The recurring `zone.js` 404 is a harmless discovery artifact and does not affect the extracted application bundle.
