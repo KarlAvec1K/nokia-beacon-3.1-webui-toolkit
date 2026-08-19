@@ -43,3 +43,8 @@ The scan returned 64 method hits, 279 endpoint mappings, and 89 route strings. T
 | `invokeShellCatCommand` / `invokeShellExistCommand` | `command_web_app.cgi` | Command gateway wrapper; no argument was called. |
 
 The scan found one shared frontend literal for `superadmin`; this does not prove that a superadmin account exists or that the current session can reach those features.
+
+
+## Repeatability
+
+Five consecutive passive runs between 03:57:51 and 03:59:15 produced the same 18-file manifest, the same 64 method hits, 279 endpoint mappings, 89 route strings, 6,596,715 source bytes, and the same single `zone.js` 404. No new lazy-loaded bundle appeared during these runs. This supports a stable source baseline for the current WebUI session, but it does not prove that undiscoverable or firmware-only resources do not exist.
