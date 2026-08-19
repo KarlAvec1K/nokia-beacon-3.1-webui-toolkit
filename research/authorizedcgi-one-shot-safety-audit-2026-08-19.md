@@ -30,3 +30,19 @@ The report includes all redacted candidates and status-only snapshots for the st
 A skipped entry is not necessarily unauthorized. It means only that the entry could not be proven safe from its URL template alone. This is intentional: an exhaustive security audit must not trade safety for a larger count.
 
 A status code from the safe subset also does not prove that every other CGI in the authorized list is readable or harmless. It provides a bounded read-only baseline.
+
+
+## Runtime result
+
+The one-shot run classified 146 unique entries from the returned list:
+
+- 35 strict read candidates;
+- 111 skipped as mutator-like, unknown-query, or otherwise not provably safe;
+- 35 GET requests sent sequentially;
+- 34 responses returned HTTP 200;
+- `radio_receiver_status_web_app.cgi` exceeded the 5-second timeout;
+- 0 response bodies retained;
+- 0 mutator candidates requested;
+- 0 configuration changes.
+
+The timeout is consistent with the endpoint's earlier authorization/runtime irregularity. It is not evidence of a successful request or a permission grant. It should remain unprobed until a narrower, separately approved diagnostic is justified.
