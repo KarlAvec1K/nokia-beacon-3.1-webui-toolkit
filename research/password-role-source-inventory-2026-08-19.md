@@ -61,3 +61,13 @@ The firmware may use a two-level Beacon model in which:
 The source supports the first two labels: the login response field `is_ctc_admin` drives the client-side `Admin` versus `User` mode. It does not establish that `Admin` is equivalent to a backend `superadmin` role. The single `superadmin` literal is in a shared product module and is insufficient to identify an account, credential, or privilege boundary on this device.
 
 This hypothesis should be tested only through non-secret metadata and documented firmware behavior. Do not infer equivalence from a UI label or attempt to change a role value client-side.
+
+### Working role model for this Beacon
+
+A useful working model, pending backend confirmation, is:
+
+- **User** — restricted subscriber/customer account.
+- **Admin** — local Beacon administrator account, likely the account used in the current session.
+- **superadmin** — ISP/operator or service-provider role, possibly unavailable to ordinary local users.
+
+The name `is_ctc_admin` makes an operator-facing interpretation plausible, but it still comes from frontend role handling. The repository must not treat this model as proof until a documented login/capability response or firmware source confirms the server-side role mapping.
