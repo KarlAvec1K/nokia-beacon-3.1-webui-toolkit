@@ -1,4 +1,4 @@
-# STA-information frontend classification — 2026-08-19
+# Nokia Beacon 3.1 — Research: STA Information Classification (2026-08-19)
 
 ## Scope and safety
 
