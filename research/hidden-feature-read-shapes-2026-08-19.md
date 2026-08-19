@@ -136,3 +136,42 @@ Inspect the container-management frontend statically to classify:
 - whether the page is hidden solely by capability or also by role.
 
 Do not call container lifecycle endpoints.
+
+
+## Container-management frontend classification
+
+Static inspection found:
+
+- route: `maintenance/container-management`;
+- menu key: `containerManagement`;
+- product flag: `SupportContainerManagement`;
+- one read action: `get_container_info`;
+- one backend mapping: `container_management_status_web_app.cgi`;
+- table labels for application name, version, and installation/status state.
+
+No frontend call site or API mapping was found for:
+
+- install;
+- uninstall;
+- deploy/undeploy;
+- start/stop;
+- update;
+- execution-environment configuration.
+
+Within the reachable WebUI bundles, container management is therefore an **informational status page**, not a lifecycle-management interface.
+
+### Visibility logic
+
+The menu is calculated dynamically and depends on several conditions:
+
+- parental-control capability visibility;
+- new parental-control mode;
+- `showContainerPage`;
+- whether the container status CGI finished loading;
+- bridge-mode page suppression;
+- whether an F-Secure application is active;
+- presence/absence of DeploymentUnit and ExecutionUnit entries.
+
+The route's hidden state is therefore consistent with product/mode/application conflict logic rather than a dedicated admin route guard.
+
+A separate passive inspection is needed to determine how `showContainerPage` is populated and whether that decision depends on the unavailable GenericService/UBUS path.
