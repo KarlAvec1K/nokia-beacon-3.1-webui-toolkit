@@ -1,50 +1,45 @@
-# CGI / API map
+# CGI and API map
 
-Confirmed on Nokia Beacon 3.1.
+This map separates observed read paths from frontend write paths. It is not a list of commands to run blindly.
 
-## Read endpoints
+## Confirmed or structurally readable reads
 
-| Endpoint | Status | Notes |
-|---|---:|---|
-| `/main_web_app.cgi` | Confirmed | Main device state |
-| `/lan_status_web_app.cgi?lan` | Confirmed | LAN data |
-| `/lan_status_web_app.cgi?wlan` | Confirmed | WLAN data |
-| `/wlan_config_status_web_app.cgi` | Confirmed | 2.4 GHz configuration |
-| `/wlan_config_status_web_app.cgi?v=11ac` | Confirmed | 5 GHz configuration |
-| `/wlan_config_status_web_app.cgi?v=11ac_highband` | Returns data | On tested dual-band Beacon 3.1, appears to expose an internal/hidden VAP rather than a separate physical high-band radio |
-| `/wlan_config_status_web_app.cgi?v=6g_band` | Returns data | On tested Beacon 3.1, response aliases hidden 5 GHz data; not evidence of a 6 GHz radio |
-| `/capabilities_status_web_app.cgi` | Confirmed | ProductConfig + UI capability data |
-| `/mesh_status_web_app.cgi` | Confirmed | Mesh/RRM state |
-| `/device_home_network_status_web_app.cgi` | Confirmed | AP/client topology and capability telemetry |
-| `/statistics_status_web_app.cgi` | Confirmed | Interface statistics |
-| `/wlan_config_guest_status_web_app.cgi` | Confirmed | Guest/main WLAN data; may contain credentials, sanitize before sharing |
-
-## Write endpoints discovered in frontend
-
-| Endpoint | Purpose |
+| Endpoint | Evidence |
 |---|---|
-| `/wlan_config_web_app.cgi?do_config_glb` | 2.4 GHz save |
-| `/wlan_config_web_app.cgi?do_config_glb11ac` | 5 GHz save |
-| `/wlan_config_web_app.cgi?do_config_glb11ac_highband` | High-band/generic code path |
-| `/wlan_config_web_app.cgi?do_config_6gband` | 6 GHz/generic code path |
-| `/wlan_config_web_app.cgi?do_config_mlo` | MLO/generic code path |
-| `/mesh_web_app.cgi?v_glb=set&rrm_enable=` | RRM setting |
-| `/wlan_config_web_app.cgi?OptimizeNetwork` | Network optimization action |
+| `/main_web_app.cgi` | HTTP 200 with a substantive JSON model |
+| `/capabilities_status_web_app.cgi` | HTTP 200 with capability and product data |
+| `/lan_status_web_app.cgi?lan` | Read model observed |
+| `/lan_status_web_app.cgi?wlan` | Read model observed |
+| `/wlan_config_status_web_app.cgi` | Wireless status model |
+| `/wlan_config_status_web_app.cgi?v=11ac` | 5 GHz status model |
+| `/mesh_status_web_app.cgi` | Mesh/RRM status model |
+| `/device_home_network_status_web_app.cgi` | Topology/client model |
+| `/statistics_status_web_app.cgi` | Statistics model |
+| `/lan_ipv4_status_web_app.cgi` | Detailed IPv4 model |
+| `/lan_ipv6_status_web_app.cgi` | Detailed IPv6 model |
+| `/container_management_status_web_app.cgi` | Container execution-environment model |
+| `/sta_info2_web_app.cgi` | Non-empty text observed; body intentionally suppressed |
 
-## Important behavior
+## Verified hidden writes
 
-The frontend uses POST requests with:
+| Setting | Path | Current admin evidence |
+|---|---|---|
+| Band Steering | `POST /wlan_config_web_app.cgi?do_config_glb` | Changed and verified |
+| 5 GHz OFDMA | `POST /wlan_config_web_app.cgi?do_config_glb11ac` | Changed and verified |
 
-```text
-Content-Type: application/x-www-form-urlencoded
-```
+## Frontend write paths not verified for this session
 
-and constructs the protected body by appending `csrf_token`, then calling:
+These are documented only as source mappings:
 
-```js
-crypto_page.encrypt_post_data(pubkey, payload)
-```
+- `/mesh_web_app.cgi?v_glb=set&rrm_enable=`;
+- `/wlan_config_web_app.cgi?OptimizeNetwork`;
+- guest Wi-Fi and general wireless save paths;
+- bridge mode, mesh add/delete, parental-control, routing, storage, reboot, restore, and firmware paths.
 
-where `token` and `pubkey` are read from `localStorage`.
+Do not call them from a read-only audit.
 
-A successful HTTP status does not necessarily mean the requested setting was accepted. Always verify the corresponding status CGI after a write.
+## Request format
+
+The frontend uses CSRF-protected POST requests. Depending on the action, the body is either form-encoded and encrypted or JSON for the FWA/GenericService family. A successful HTTP status alone does not prove a change. Always verify the status endpoint and preserve the previous state.
+
+Never copy tokens, encrypted payloads, credentials, or raw response bodies into an issue or chat.
