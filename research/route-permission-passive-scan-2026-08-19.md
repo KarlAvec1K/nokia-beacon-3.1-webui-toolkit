@@ -181,3 +181,20 @@ Interpretation:
 This is a strong reference signature for real backend permission denial. It differs from the earlier GenericService HTTP 404, which is more consistent with an absent/unregistered handler than role denial.
 
 The scan script did not trigger this CGI/API request; it was background activity from the already loaded Overview page.
+
+
+## Initial resolver/action inventory
+
+The first resolver-focused scan found:
+
+- 11 route groups with resolver arrays;
+- Overview uses `[T,O]`;
+- messages, WAN, LAN, Wi-Fi, devices, voice, maintenance, advanced settings, security, and troubleshooting use `[y,T,O]`;
+- one genuine resolver method whose only visible action is publishing `SHOW_HEADER_REFRESH_BUTTON = true`;
+- one false-positive Promise `resolve()` from the Zone polyfill.
+
+The simple regular expression did not correctly extract resolver methods containing nested blocks. Therefore, its list of 250 named `request(...)` calls is only a global API-call inventory and must **not** be attributed to route resolvers.
+
+The 47 `loadingStateCheck(...)` findings are component initialization dependencies. They are useful for predicting what a page expects after navigation, but they do not show which calls are made by `y`, `T`, or `O`.
+
+A brace-balanced resolver extraction is required before assigning any automatic request to these resolver aliases.
