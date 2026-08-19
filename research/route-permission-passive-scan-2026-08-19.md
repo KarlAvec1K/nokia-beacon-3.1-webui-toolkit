@@ -239,3 +239,29 @@ No other action-like string was found in its balanced method body.
 None of the three route resolvers references `get_radio_access_status`. Therefore the observed HTTP 403 for that action originates from the Overview component lifecycle, not from shared route resolution.
 
 The remaining task is to map the minified route aliases `y`, `T`, and `O` to these three resolver implementations through their ES-module import/export aliases.
+
+
+## Final resolver alias mapping
+
+The ES-module export/import chain gives an exact mapping:
+
+```text
+Hot -> export mc -> route alias y
+Zot -> export nc -> route alias O
+$ot -> export oc -> route alias T
+```
+
+Therefore:
+
+| Route alias | Resolver behavior |
+|---|---|
+| `y` | show the header refresh button |
+| `O` | enforce first-login password-change redirects |
+| `T` | read `getDeviceCapability` when needed and always read `getHardwareStatus` |
+
+Route application:
+
+- Overview uses `[T,O]`: common read data plus credential-change enforcement.
+- All other main sections use `[y,T,O]`: the same two resolvers plus the header refresh control.
+
+This closes the route-resolver branch. None of these resolvers calls `get_radio_access_status`.
