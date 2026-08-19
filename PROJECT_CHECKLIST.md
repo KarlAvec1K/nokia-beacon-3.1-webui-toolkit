@@ -58,6 +58,15 @@ This checklist tracks what has been verified on the current Beacon 3.1 normal-ad
 - [x] Container visibility and absence of lifecycle call sites.
 - [x] Radio-access polling chain and 403 fallback behavior.
 
+## Next practical phase: Wi‑Fi performance and security report
+
+- [x] Add the redacted report template: [performance-security-report-template.md](wifi/performance-security-report-template.md).
+- [ ] Capture the read-only router baseline.
+- [ ] Measure 2.4 GHz and 5 GHz performance at repeatable locations.
+- [ ] Review WPS, UPnP, guest isolation, management access, firmware status, DHCP, DNS, and IPv4/IPv6.
+- [ ] Test at most one reversible setting at a time, with a recovery path.
+- [ ] Publish the completed report without secrets or client identifiers.
+
 ## Remaining investigation
 
 ### A. Review the 40 skipped entries
