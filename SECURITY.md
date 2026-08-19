@@ -1,36 +1,42 @@
 # Security and responsible use
 
-This project is intended for research on **Nokia Beacon 3.1 devices that you own or are explicitly authorized to administer**.
+This project is for Nokia Beacon 3.1 devices owned by, or explicitly administered by, the person running the tests.
 
-## Do not publish secrets
+## Data handling
 
-Before opening an issue, PR, discussion, or attaching logs, remove:
+Status and configuration responses may contain secrets or personal data. Before sharing a log, remove:
 
-- Wi-Fi passwords / PSKs
-- WebUI passwords
-- session tokens
-- CSRF tokens
-- encrypted session blobs
-- private keys
-- device serial numbers
-- personal/client MAC addresses
-- ISP account or customer identifiers
+- Wi-Fi passwords and PSKs;
+- WebUI passwords;
+- session and CSRF tokens;
+- encrypted session material and private keys;
+- serial numbers;
+- private/client MAC addresses;
+- SSIDs, public IP addresses, and ISP/customer identifiers;
+- raw STA, mesh, LAN, or cellular response bodies.
 
-Some Beacon status/configuration endpoints may expose sensitive values in clear text. Treat raw dumps as secrets until reviewed.
+Prefer shape-only reports, counts, status codes, and redacted endpoint names.
 
-## Scope of this repository
+## What is allowed here
 
-Allowed research includes:
+- static inspection of the owner’s loaded JavaScript;
+- read-only GET probes with response bodies suppressed;
+- comparison of ProductConfig, UI capability, authorized-CGI metadata, and runtime behavior;
+- owner-approved configuration changes with a backup and before/after verification;
+- documentation of vendor-supported recovery procedures.
 
-- documenting hidden UI controls;
-- comparing ProductConfig support with UI capability gating;
-- inspecting JavaScript loaded by the owner's WebUI;
-- calling CGI endpoints from an already authenticated local session;
-- documenting owner recovery and vendor-supported recovery procedures;
-- verifying settings by reading device state before and after changes.
+## What is not automated
 
-This repository should not be used to publish brute-force tooling, credential theft, remote authentication bypasses, or instructions for attacking devices without authorization.
+The repository intentionally excludes automatic calls to:
 
-## Reporting a vulnerability
+- command CGI;
+- GenericService functions with unknown payloads;
+- RRM and Optimize Network;
+- reboot, factory reset, firmware, password, deletion, install, or lifecycle actions;
+- any route whose query looks like a write or scan.
 
-If a finding would allow unauthenticated or remote compromise rather than merely exposing owner-accessible hidden controls, avoid publishing weaponized proof-of-concept code immediately. Prefer responsible disclosure to the vendor/operator first, then document the issue after an appropriate remediation window.
+A normal admin session does not become superadmin because a hidden route exists. Do not attempt to bypass role checks.
+
+## Reporting security issues
+
+If a finding enables unauthenticated or remote compromise, do not publish a weaponized proof of concept first. Contact the vendor/operator through a responsible disclosure channel and document the issue only after appropriate remediation steps.
