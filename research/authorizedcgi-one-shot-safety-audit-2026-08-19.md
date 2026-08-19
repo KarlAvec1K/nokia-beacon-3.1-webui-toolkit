@@ -1,4 +1,4 @@
-# Authorized-CGI one-shot safety audit — 2026-08-19
+# Nokia Beacon 3.1 — Research: Authorized-CGI One-Shot Safety Audit (2026-08-19)
 
 ## Purpose
 
