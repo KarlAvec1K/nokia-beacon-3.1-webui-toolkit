@@ -34,3 +34,23 @@ Only `safe-read` entries are requested. Mutator, ambiguous and unknown entries a
 - no configuration change is attempted.
 
 This is the broadest automatic pass that remains defensible as read-only. A later mutator phase would require an explicit per-endpoint allowlist and state-preservation plan.
+
+
+## First runtime result and classifier correction
+
+The first phase-2 run classified 146 entries as follows:
+
+- 42 `safe-read` candidates;
+- 31 `ambiguous-read` candidates;
+- 65 `mutator` candidates;
+- 8 `unknown` candidates.
+
+It sent 42 GETs: 41 returned HTTP 200 and the radio-receiver endpoint returned HTTP 403. No response bodies were retained and no POST/mutator request was sent.
+
+A review found one overly broad classification: `storage_web_app.cgi` was accepted because the pathname matched a broad storage/read heuristic even though the bundle also contains mutating storage actions on that CGI family. The script has been corrected to:
+
+- require matching query keys when consulting a source mapping;
+- stop treating generic `storage_web_app.cgi` as a safe read path;
+- keep overloaded CGI siblings out of the automatic probe unless the exact read form is proven.
+
+The earlier status-only request did not include a query or body, and no configuration change was observed, but the result is treated as an audit caveat. Rerun the corrected script before using its safe-read count as the final baseline.
