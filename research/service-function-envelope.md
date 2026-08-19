@@ -1,4 +1,4 @@
-# GenericService request envelope
+# Nokia Beacon 3.1 — Research: GenericService Request Envelope
 
 ## Purpose
 
