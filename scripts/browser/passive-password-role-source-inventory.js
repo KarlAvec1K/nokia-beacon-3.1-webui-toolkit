@@ -143,7 +143,7 @@ await (async () => {
 
   const mappings = [];
   const mappingPattern =
-    /([A-Za-z_$][\w$]*)\s*:\s*["']([^"'\\r\\n]*\.cgi[^"'\\r\\n]*)["']/g;
+    /([A-Za-z_$][\w$]*)\s*:\s*["']([^"'\r\n]*\.cgi[^"'\r\n]*)["']/g;
 
   for (const item of sources) {
     let match;
