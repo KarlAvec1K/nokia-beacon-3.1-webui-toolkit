@@ -203,8 +203,8 @@ await (async () => {
     const readName =
       path === '/main_web_app.cgi' ||
       path === '/capabilities_status_web_app.cgi' ||
-      /(?:^|_)(status|info)_web_app\\.cgi$/.test(path) ||
-      /(?:dashboard|device|wan|lan|wlan|mesh|overview|pon|statistics|container)[^/]*\\.cgi$/.test(path);
+      /(?:^|_)(status|info)_web_app\.cgi$/.test(path) ||
+      /(?:dashboard|device|wan|lan|wlan|mesh|overview|pon|statistics|container)[^/]*\.cgi$/.test(path);
 
     return readName ? 'safe-read' : 'unknown';
   };
