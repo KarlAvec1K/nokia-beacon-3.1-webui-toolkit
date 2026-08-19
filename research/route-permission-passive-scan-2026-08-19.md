@@ -121,3 +121,63 @@ Extract structured route definitions and associate each route with:
 - corresponding menu key and capability lookup when visible in source.
 
 Do not test hidden routes or CGI paths merely because they appear in this inventory.
+
+
+## Targeted route/guard/role scan
+
+A second passive scan produced:
+
+- 90 route objects
+- 3 guard method definitions
+- 11 explicit role/storage checks
+- 300 capability calls (scanner cap reached)
+- 158 menu entries
+- 0 CGI requests
+
+### Guard mapping
+
+The three extracted guard methods were:
+
+```text
+canActivateChild() -> checkIfAuthenticated()
+canActivate()      -> checkIfAuthenticated()
+canActivate()      -> authService.isAdmin
+```
+
+The top-level main-module route explicitly applies the authentication guard through both `canActivate` and `canActivateChild`.
+
+No extracted feature route explicitly applies the admin guard. The guard exists in the bundle, but within the complete reachable route set scanned here it appears unused. This suggests that most effective feature restriction is implemented by menu/capability filtering and backend authorization rather than Angular route guards.
+
+This remains a source-level conclusion; minification or dynamically assembled route metadata could hide an additional association.
+
+### Explicit role checks
+
+The targeted scan found:
+
+- repeated `localStorage.userMode === "Admin"` checks;
+- one `localStorage.userModeNKBC === "Admin"` check;
+- one `sessionStorage.currentUser === "superadmin"` check in APN/URSP logic;
+- an `emailUser === "no"` menu-hiding condition.
+
+No broader superadmin route guard was found.
+
+## Observed Overview runtime behavior
+
+A console trace captured normal page initialization behavior:
+
+```text
+NO-CACHE CALLED
+GET_RADIO_ACCESS API Failed: HTTP 403
+Overview Onsuccess
+```
+
+Interpretation:
+
+- the Overview component itself invokes the `get_radio_access_status` action;
+- the backend returns HTTP 403 for that specific action under the current admin session;
+- the rest of Overview continues and reports success;
+- the session and transport remain functional.
+
+This is a strong reference signature for real backend permission denial. It differs from the earlier GenericService HTTP 404, which is more consistent with an absent/unregistered handler than role denial.
+
+The scan script did not trigger this CGI/API request; it was background activity from the already loaded Overview page.
