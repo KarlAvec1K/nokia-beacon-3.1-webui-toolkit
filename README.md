@@ -87,3 +87,10 @@ See [docs/admin-superadmin.md](docs/admin-superadmin.md), [docs/cgi-api-map.md](
 - [Security policy](SECURITY.md)
 - [Issue templates](.github/ISSUE_TEMPLATE/)
 - [Pull request template](.github/PULL_REQUEST_TEMPLATE.md)
+
+## Navigation
+
+- [Documentation index](docs/README.md)
+- [Research index](research/README.md)
+- [Wi-Fi findings index](wifi/README.md)
+- [Naming and organization standard](docs/naming-and-organization.md)
