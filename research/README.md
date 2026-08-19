@@ -13,6 +13,7 @@ This folder contains dated evidence, not general user instructions.
 
 - [Authorized-CGI One-Shot Safety Audit](authorizedcgi-one-shot-safety-audit-2026-08-19.md)
 - [Authorized-CGI Phase 2 Maximum-Safe Audit](authorizedcgi-phase2-maximum-safe-audit-2026-08-19.md)
+- [Authorized-CGI Skipped-Entry Review](authorizedcgi-skipped-entry-review-2026-08-19.md)
 - [Route and Permission Passive Scan](route-permission-passive-scan-2026-08-19.md)
 - [GenericService Runtime 404](genericservice-runtime-404-2026-08-19.md)
 - [GenericService Function Inventory](genericservice-function-inventory-2026-08-19.md)
