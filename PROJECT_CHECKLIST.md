@@ -62,6 +62,7 @@ This checklist tracks what has been verified on the current Beacon 3.1 normal-ad
 ### A. Review the 40 skipped entries
 
 - [x] Add a passive skipped-entry review script that produces redacted tables.
+- [ ] Run the corrected review script and confirm the expected 41 safe-read / 65 mutator / 31 ambiguous-read / 9 unknown split.
 
 - [ ] Produce a reviewed table for the 31 `ambiguous-read` entries.
 - [ ] Produce a reviewed table for the 9 `unknown` entries.
