@@ -1,4 +1,4 @@
-# Code of Conduct
+# Nokia Beacon 3.1 WebUI Toolkit — Code of Conduct
 
 ## Our commitment
 
