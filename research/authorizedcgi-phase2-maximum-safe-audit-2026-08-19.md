@@ -61,3 +61,26 @@ The earlier status-only request did not include a query or body, and no configur
 The next pasted report still showed the pre-correction behavior: generic `storage_web_app.cgi` remained in `safe-read`, and overloaded mappings such as `set_root_fname` were attached by pathname alone. That output must not be used as the final corrected baseline.
 
 The repository script has since been updated again to remove the generic storage pathname from the safe-read allowlist. Use the current raw file content and rerun it after a fresh copy/paste. The expected corrected report should classify generic `storage_web_app.cgi` as `unknown` or `ambiguous-read`, not `safe-read`.
+
+
+## Final corrected baseline
+
+The corrected rerun is internally consistent:
+
+- 146 unique authorized entries classified;
+- 41 `safe-read` entries probed;
+- 31 `ambiguous-read`, 65 `mutator`, and 9 `unknown` entries skipped;
+- 40 safe GETs returned HTTP 200;
+- `radio_receiver_status_web_app.cgi` returned HTTP 403;
+- 0 mutator or ambiguous requests;
+- 0 response bodies retained;
+- 0 configuration changes.
+
+Overloaded CGI handling is now correct in the observed cases:
+
+- generic `storage_web_app.cgi` is `unknown`;
+- `storageget` and `ls` forms remain ambiguous and were not called;
+- `device_status_web_app.cgi?getroot` is a safe read;
+- `device_status_web_app.cgi?rootalias` is ambiguous and was not called.
+
+This is the final read-only authorized-CGI baseline for the current session.
