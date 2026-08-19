@@ -1,4 +1,4 @@
-# Normal admin versus superadmin
+# Nokia Beacon 3.1 — Admin and Superadmin Access
 
 The WebUI exposes three separate layers. They must not be treated as the same permission system.
 
