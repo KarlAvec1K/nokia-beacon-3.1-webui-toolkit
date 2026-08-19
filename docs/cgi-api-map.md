@@ -1,4 +1,4 @@
-# CGI and API map
+# Nokia Beacon 3.1 — CGI and API Map
 
 This map separates observed read paths from frontend write paths. It is not a list of commands to run blindly.
 
