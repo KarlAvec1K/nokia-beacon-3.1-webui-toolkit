@@ -94,3 +94,5 @@ See [docs/admin-superadmin.md](docs/admin-superadmin.md), [docs/cgi-api-map.md](
 - [Research index](research/README.md)
 - [Wi-Fi findings index](wifi/README.md)
 - [Naming and organization standard](docs/naming-and-organization.md)
+
+- [Project checklist](PROJECT_CHECKLIST.md)
