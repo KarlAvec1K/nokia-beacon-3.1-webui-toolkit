@@ -1,4 +1,4 @@
-# Frontend command-service notes — 2026-08-19
+# Nokia Beacon 3.1 — Research: Frontend Command-Service Notes
 
 ## Scope
 
