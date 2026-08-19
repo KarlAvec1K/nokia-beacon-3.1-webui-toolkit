@@ -177,7 +177,7 @@ await (async () => {
       path === '/main_web_app.cgi' ||
       path === '/capabilities_status_web_app.cgi' ||
       /(?:^|_)(status|info)_web_app\.cgi$/.test(path) ||
-      /(?:dashboard|device|wan|lan|wlan|mesh|overview|storage|pon|statistics|container)[^/]*\.cgi$/.test(path);
+      /(?:dashboard|device|wan|lan|wlan|mesh|overview|pon|statistics|container)[^/]*\.cgi$/.test(path);
 
     if (mappedRead && readName) {
       return { bucket: 'safe-read', reason: 'static-read-mapping' };
