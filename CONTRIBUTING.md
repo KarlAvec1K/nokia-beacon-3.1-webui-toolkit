@@ -1,4 +1,4 @@
-# Contributing
+# Nokia Beacon 3.1 WebUI Toolkit — Contributing Guide
 
 Thank you for helping improve the Nokia Beacon 3.1 WebUI Toolkit.
 
