@@ -6,6 +6,8 @@ labels: research
 assignees: ""
 ---
 
+# Nokia Beacon 3.1 — Research Report
+
 ## Finding
 
 What did you discover?
