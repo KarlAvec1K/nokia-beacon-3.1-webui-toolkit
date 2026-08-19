@@ -74,7 +74,7 @@ This checklist tracks what has been verified on the current Beacon 3.1 normal-ad
 ### B. Complete passive source coverage
 
 - [ ] Inspect any lazy-loaded chunks that are not present in the current session.
-- [ ] Re-run the one-shot source inventory after visiting relevant pages.
+- [x] Re-run the one-shot source inventory after visiting relevant pages (18 bundles, 19 discovered URLs, 279 endpoint mappings).
 - [ ] Resolve stale chunk 404s where a valid application copy is available.
 - [ ] Add a source-derived endpoint/method matrix with separate read and write columns.
 
