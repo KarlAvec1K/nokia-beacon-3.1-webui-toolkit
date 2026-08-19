@@ -26,6 +26,14 @@ It classifies every authorized entry and probes only strict read/status paths. I
 
 A `zone.js 404` can be a stale support-bundle reference. It does not automatically invalidate successful application-bundle results.
 
+## Review skipped entries
+
+To build redacted tables for the ambiguous and unknown authorized-CGI entries without calling them, use:
+
+- [authorizedcgi-skipped-entry-review.js](authorizedcgi-skipped-entry-review.js)
+
+The output separates entries into ambiguousRead and unknown, and reports query keys, frontend action names, inferred HTTP methods, source files, and likely side effects. It sends zero requests to the skipped CGI routes.
+
 ## Do not automate
 
 Do not add RRM, Optimize Network, command CGI, GenericService, reboot, reset, password, firmware, deletion, storage, or container lifecycle calls to a read-only script. These require a separate, explicit and recoverable change plan.
