@@ -61,6 +61,8 @@ This checklist tracks what has been verified on the current Beacon 3.1 normal-ad
 
 ### A. Review the 40 skipped entries
 
+- [x] Add a passive skipped-entry review script that produces redacted tables.
+
 - [ ] Produce a reviewed table for the 31 `ambiguous-read` entries.
 - [ ] Produce a reviewed table for the 9 `unknown` entries.
 - [ ] For each entry, identify the exact frontend action, HTTP method, query keys, and likely side effect.
