@@ -1,4 +1,4 @@
-# Security and responsible use
+# Nokia Beacon 3.1 WebUI Toolkit — Security and Responsible Use
 
 This project is for Nokia Beacon 3.1 devices owned by, or explicitly administered by, the person running the tests.
 
