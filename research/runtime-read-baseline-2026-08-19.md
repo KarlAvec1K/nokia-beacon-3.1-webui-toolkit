@@ -1,4 +1,4 @@
-# Runtime read baseline — 2026-08-19
+# Nokia Beacon 3.1 — Research: Runtime Read Baseline (2026-08-19)
 
 Tests were run from an authenticated normal-admin session on a Beacon 3.1 in AP/bridge mode. GET probes reported only status, body class/size, and shape metadata.
 
