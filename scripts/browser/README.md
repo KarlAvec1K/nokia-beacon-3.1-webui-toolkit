@@ -37,3 +37,11 @@ The output uses the same corrected bucket rules as the phase-2 audit: safe-read 
 ## Do not automate
 
 Do not add RRM, Optimize Network, command CGI, GenericService, reboot, reset, password, firmware, deletion, storage, or container lifecycle calls to a read-only script. These require a separate, explicit and recoverable change plan.
+
+## Password and role source review
+
+For a passive review of password-related routes and role guards, use:
+
+- [passive-password-role-source-inventory.js](passive-password-role-source-inventory.js)
+
+This script inspects only same-origin JavaScript source. It reports password endpoint templates, inferred frontend methods, and redacted `superadmin`/admin guard contexts. It reads no runtime storage values, calls zero CGI routes, and cannot change a password or elevate privileges.
