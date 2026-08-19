@@ -168,3 +168,18 @@ This proves that being capability-enabled **and** listed in `authorizedcgi` is s
 The effective backend decision includes at least one additional dimension, plausibly operating mode, a deeper privilege check, device applicability, or firmware/operator integration state.
 
 The same capture reported 150 `authorizedcgi` entries, whereas the earlier baseline reported 146. This difference should not be interpreted until repeated snapshots establish whether the list is dynamic or the earlier extraction counted differently.
+
+
+## authorizedcgi stability and duplicate count
+
+Three consecutive capability snapshots were identical:
+
+- HTTP 200 for all three reads;
+- raw array length: 150;
+- unique entry count: 146;
+- identical sorted-set fingerprint: `88f7a9eb6d1d8baf`;
+- radio receiver status listed in every snapshot.
+
+The apparent change from 146 to 150 was not dynamic authorization. The array contains four duplicate entries, while the original baseline counted unique CGI strings.
+
+Use **146 unique entries** as the stable normal-admin baseline and retain 150 only as the raw serialized array length.
