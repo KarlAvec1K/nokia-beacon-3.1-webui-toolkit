@@ -1,4 +1,4 @@
-# Comprehensive passive WebUI inventory — 2026-08-19
+# Nokia Beacon 3.1 — Research: Comprehensive Passive Inventory (2026-08-19)
 
 ## Execution
 
