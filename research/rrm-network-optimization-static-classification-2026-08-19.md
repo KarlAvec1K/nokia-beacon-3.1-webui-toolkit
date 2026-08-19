@@ -1,4 +1,4 @@
-# RRM and network-optimization classification — 2026-08-19
+# Nokia Beacon 3.1 — Research: RRM and Network Optimization (2026-08-19)
 
 ## RRM / Enhanced Roaming
 
