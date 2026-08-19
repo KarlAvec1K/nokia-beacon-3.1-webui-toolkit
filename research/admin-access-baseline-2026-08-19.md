@@ -1,4 +1,4 @@
-# Normal-admin access baseline — 2026-08-19
+# Nokia Beacon 3.1 — Research: Normal-Admin Access Baseline (2026-08-19)
 
 ## Test context
 
