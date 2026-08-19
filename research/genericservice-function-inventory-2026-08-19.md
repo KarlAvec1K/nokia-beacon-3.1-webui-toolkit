@@ -1,4 +1,4 @@
-# GenericService function inventory — 2026-08-19
+# Nokia Beacon 3.1 — Research: GenericService Function Inventory (2026-08-19)
 
 ## Scope
 
