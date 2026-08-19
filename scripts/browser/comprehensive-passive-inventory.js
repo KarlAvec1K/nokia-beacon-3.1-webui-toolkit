@@ -153,7 +153,7 @@ await (async () => {
 
   try {
     // Fetch the WebUI entry document, never a CGI.
-    const entryUrl = new URL('/', location.origin).href;
+    const entryUrl = new URL(location.pathname, location.origin).href;
     const response = await fetch(entryUrl, {
       method: 'GET',
       credentials: 'include',
