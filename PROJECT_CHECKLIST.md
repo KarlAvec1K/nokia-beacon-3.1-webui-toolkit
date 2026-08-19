@@ -63,12 +63,12 @@ This checklist tracks what has been verified on the current Beacon 3.1 normal-ad
 ### A. Review the 40 skipped entries
 
 - [x] Add a passive skipped-entry review script that produces redacted tables.
-- [ ] Re-run the latest script from the raw GitHub file; the pasted 03:49 result was from the older classifier (`137 ambiguous / 9 unknown`).
-- [ ] Confirm the corrected 41 safe-read / 65 mutator / 31 ambiguous-read / 9 unknown split.
-
-- [ ] Produce a reviewed table for the 31 `ambiguous-read` entries.
-- [ ] Produce a reviewed table for the 9 `unknown` entries.
-- [ ] For each entry, identify the exact frontend action, HTTP method, query keys, and likely side effect.
+- [x] Re-run the latest script from the raw GitHub file; the earlier 03:49 result was from the older classifier (`137 ambiguous / 9 unknown`).
+- [x] Confirm the corrected 41 safe-read / 65 mutator / 31 ambiguous-read / 9 unknown split.
+- [x] Produce a reviewed table for the 31 `ambiguous-read` entries.
+- [x] Produce a reviewed table for the 9 `unknown` entries.
+- [x] For each entry, identify the exact frontend action, HTTP method, query keys, and likely side effect.
+- [x] Publish the redacted dated report: [authorized CGI skipped-entry review](research/authorizedcgi-skipped-entry-review-2026-08-19.md).
 - [ ] Do not probe an ambiguous entry until its exact read behavior is proven from source.
 
 ### B. Complete passive source coverage
