@@ -142,3 +142,29 @@ Possible causes remain:
 - firmware integration mismatch.
 
 The current evidence does not distinguish those causes, but it does establish a real backend authorization-style denial and a safe frontend fallback.
+
+
+## Radio capability/ACL cross-check
+
+A minimal capabilities read returned:
+
+- HTTP 200 with valid JSON;
+- an `overview.radioAccess` capability object;
+- keys `receiverButton` and `visibility`;
+- a numeric visibility node;
+- `radio_receiver_status_web_app.cgi` present in `authorizedcgi`;
+- `overview_get_web_app.cgi` absent from `authorizedcgi`.
+
+Combined with the observed runtime behavior:
+
+| Layer | Result |
+|---|---|
+| Frontend capability | radio-access node present; runtime code evaluated visibility as on |
+| `authorizedcgi` metadata | `radio_receiver_status_web_app.cgi` listed |
+| Actual backend request | HTTP 403 |
+
+This proves that being capability-enabled **and** listed in `authorizedcgi` is still insufficient to predict runtime authorization.
+
+The effective backend decision includes at least one additional dimension, plausibly operating mode, a deeper privilege check, device applicability, or firmware/operator integration state.
+
+The same capture reported 150 `authorizedcgi` entries, whereas the earlier baseline reported 146. This difference should not be interpreted until repeated snapshots establish whether the list is dynamic or the earlier extraction counted differently.
