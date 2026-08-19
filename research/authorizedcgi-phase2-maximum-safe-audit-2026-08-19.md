@@ -1,4 +1,4 @@
-# Authorized-CGI phase-2 maximum-safe audit — 2026-08-19
+# Nokia Beacon 3.1 — Research: Authorized-CGI Phase 2 Maximum-Safe Audit (2026-08-19)
 
 ## Scope
 
