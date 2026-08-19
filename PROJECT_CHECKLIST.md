@@ -94,6 +94,8 @@ This checklist tracks what has been verified on the current Beacon 3.1 normal-ad
 
 ### E. Normal admin versus superadmin
 
+- [x] Add a passive password/role source inventory script; it does not call password or privilege endpoints.
+- [ ] Run the passive password/role source inventory and review its redacted output.
 - [ ] Obtain a legitimate, documented superadmin comparison session or firmware sample, if available.
 - [ ] Compare capability trees, `authorizedcgi`, route guards, and runtime statuses.
 - [ ] Record differences without publishing credentials or tokens.
