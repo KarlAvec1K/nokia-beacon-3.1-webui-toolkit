@@ -1,15 +1,23 @@
 // Nokia Beacon 3.1 - read-only authorizedcgi stability check
 // Performs three GETs to the known capabilities endpoint.
-// Reports only counts and SHA-256 fingerprints, never the CGI list itself.
+// Reports only counts and deterministic fingerprints, never the CGI list itself.
 
 await (async () => {
-  const digest = async values => {
+  const fingerprint = values => {
     const canonical = [...new Set(values.map(String))].sort().join('\n');
-    const bytes = new TextEncoder().encode(canonical);
-    const hash = await crypto.subtle.digest('SHA-256', bytes);
-    return [...new Uint8Array(hash)]
-      .map(x => x.toString(16).padStart(2, '0'))
-      .join('');
+    let hash = 0xcbf29ce484222325n;
+    const prime = 0x100000001b3n;
+    const mask = 0xffffffffffffffffn;
+
+    for (let i = 0; i < canonical.length; i++) {
+      const code = canonical.charCodeAt(i);
+      hash ^= BigInt(code & 0xff);
+      hash = (hash * prime) & mask;
+      hash ^= BigInt((code >>> 8) & 0xff);
+      hash = (hash * prime) & mask;
+    }
+
+    return hash.toString(16).padStart(16, '0');
   };
 
   const snapshots = [];
@@ -39,7 +47,7 @@ await (async () => {
         jsonValid: parsed !== null,
         rawCount: list.length,
         uniqueCount: new Set(list).size,
-        sortedSetSha256: await digest(list),
+        sortedSetFingerprint64: fingerprint(list),
         radioReceiverStatusListed: list.some(x =>
           x === 'radio_receiver_status_web_app.cgi' ||
           x.startsWith('radio_receiver_status_web_app.cgi?')
@@ -54,13 +62,14 @@ await (async () => {
   }
 
   const fingerprints = snapshots
-    .map(x => x.sortedSetSha256)
+    .map(x => x.sortedSetFingerprint64)
     .filter(Boolean);
 
   return JSON.stringify({
     meta: {
       mode: 'three-read-only-authorizedcgi-stability-snapshots',
-      generatedAt: new Date().toISOString()
+      generatedAt: new Date().toISOString(),
+      fingerprintAlgorithm: 'FNV-1a-like-64-over-sorted-unique-UTF16'
     },
     safety: {
       requestsSent: 3,
