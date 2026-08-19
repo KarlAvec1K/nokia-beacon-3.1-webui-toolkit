@@ -1,4 +1,4 @@
-# Normal-admin access inventory — 2026-08-19
+# Nokia Beacon 3.1 — Research: Normal-Admin Access Inventory
 
 This document records features found in the Beacon 3.1 frontend or firmware that are hidden, disabled, unlisted, or only partially usable for the tested normal admin.
 
