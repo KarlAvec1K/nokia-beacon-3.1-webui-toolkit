@@ -88,6 +88,14 @@ See [docs/admin-superadmin.md](docs/admin-superadmin.md), [docs/cgi-api-map.md](
 - [Issue templates](.github/ISSUE_TEMPLATE/)
 - [Pull request template](.github/PULL_REQUEST_TEMPLATE.md)
 
+## Project tracking
+
+Use the public GitHub Project board to follow issues, evidence reviews, and remaining tests:
+
+- [Nokia Beacon 3.1 WebUI Toolkit — Project board](https://github.com/users/KarlAvec1K/projects/2)
+
+The board is a planning view only. Issue labels and research reports remain the source of technical evidence.
+
 ## Navigation
 
 - [Documentation index](docs/README.md)
