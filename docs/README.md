@@ -25,3 +25,5 @@ Every finding should use one of these labels:
 - **Ambiguous** — the endpoint may be readable, but its parameters or mode behavior are not proven safe.
 - **Denied** — the backend returned an authorization-style denial.
 - **Not tested** — intentionally excluded for safety.
+
+- [Project checklist](../PROJECT_CHECKLIST.md) — completed work, remaining tests, and blocked actions.
