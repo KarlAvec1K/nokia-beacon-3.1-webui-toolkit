@@ -6,6 +6,8 @@ labels: bug
 assignees: ""
 ---
 
+# Nokia Beacon 3.1 — Bug Report
+
 ## Summary
 
 Describe the problem in one or two sentences.
