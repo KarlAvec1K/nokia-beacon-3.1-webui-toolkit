@@ -1,4 +1,4 @@
-# Route and permission passive scan — 2026-08-19
+# Nokia Beacon 3.1 — Research: Route and Permission Passive Scan (2026-08-19)
 
 ## Scope
 
