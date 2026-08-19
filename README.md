@@ -79,3 +79,11 @@ These paths are not proof that the current normal-admin session may safely use t
 Never run factory reset, reboot, firmware upgrade, password changes, deletion, command CGI, RRM, Optimize Network, or container lifecycle actions from an automated inventory script. Those require a separate, explicit decision and a recovery plan.
 
 See [docs/admin-superadmin.md](docs/admin-superadmin.md), [docs/cgi-api-map.md](docs/cgi-api-map.md), and [SECURITY.md](SECURITY.md).
+
+## Community files
+
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+- [Contributing guide](CONTRIBUTING.md)
+- [Security policy](SECURITY.md)
+- [Issue templates](.github/ISSUE_TEMPLATE/)
+- [Pull request template](.github/PULL_REQUEST_TEMPLATE.md)
