@@ -1,4 +1,4 @@
-# Command-CGI passive scan — 2026-08-19
+# Nokia Beacon 3.1 — Research: Command-CGI Passive Scan (2026-08-19)
 
 ## Result
 
