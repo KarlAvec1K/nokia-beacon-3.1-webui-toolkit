@@ -54,3 +54,10 @@ A review found one overly broad classification: `storage_web_app.cgi` was accept
 - keep overloaded CGI siblings out of the automatic probe unless the exact read form is proven.
 
 The earlier status-only request did not include a query or body, and no configuration change was observed, but the result is treated as an audit caveat. Rerun the corrected script before using its safe-read count as the final baseline.
+
+
+## Corrected-script rerun note
+
+The next pasted report still showed the pre-correction behavior: generic `storage_web_app.cgi` remained in `safe-read`, and overloaded mappings such as `set_root_fname` were attached by pathname alone. That output must not be used as the final corrected baseline.
+
+The repository script has since been updated again to remove the generic storage pathname from the safe-read allowlist. Use the current raw file content and rerun it after a fresh copy/paste. The expected corrected report should classify generic `storage_web_app.cgi` as `unknown` or `ambiguous-read`, not `safe-read`.
