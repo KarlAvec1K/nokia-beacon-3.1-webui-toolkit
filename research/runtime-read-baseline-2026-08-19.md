@@ -84,3 +84,61 @@ For each endpoint, track four independent dimensions:
 4. **Runtime behavior** — readable JSON/text, 200-empty, rejected, not found, or method-unresolved.
 
 This model is more accurate than treating `authorizedcgi` as the sole access-control source.
+
+
+## Overview radio-access 403 classification
+
+Static source analysis and an observed console trace establish the full chain:
+
+```text
+overview.radioAccess.visibility.isOn
+  -> Overview starts a five-second polling stream
+  -> action getRadioAccessStatus
+  -> internal action get_radio_access_status
+  -> GET radio_receiver_status_web_app.cgi
+  -> HTTP 403
+```
+
+The frontend has a separate FWA-gateway action:
+
+```text
+get_radio_access_status_fwa_gw
+  -> overview_get_web_app.cgi
+```
+
+That variant is handled separately and is not the action seen in the captured 403.
+
+### Error handling
+
+On successful radio-access response, Overview:
+
+- marks radio-access data available;
+- shows the radio-access card;
+- processes the returned signal data.
+
+On failure, Overview:
+
+- hides the radio-access card;
+- increments `hasRadioAccessError`;
+- logs the error.
+
+On the next polling tick, the error counter causes the polling subscription to reset and unsubscribe. The 403 therefore normally produces one failed request followed by graceful suppression of the unsupported/denied card, not endless retry traffic.
+
+### Interpretation
+
+The page only starts this request when the resolved device capability reports:
+
+```text
+overview.radioAccess.visibility.isOn == true
+```
+
+The current session therefore exhibits a capability/backend mismatch: the frontend capability enables the card, while the backend denies its read endpoint with HTTP 403.
+
+Possible causes remain:
+
+- normal-admin role restriction;
+- AP/bridge-mode restriction;
+- generic/operator capability data that is too broad for this device;
+- firmware integration mismatch.
+
+The current evidence does not distinguish those causes, but it does establish a real backend authorization-style denial and a safe frontend fallback.
