@@ -1,4 +1,4 @@
-# Hidden-feature read shapes — 2026-08-19
+# Nokia Beacon 3.1 — Research: Hidden-Feature Read Shapes (2026-08-19)
 
 ## Scope
 
