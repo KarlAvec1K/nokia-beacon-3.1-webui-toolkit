@@ -133,13 +133,23 @@ await (async () => {
   }
 
   const mappingFor = endpoint => {
-    const path = (() => {
-      try { return new URL(endpoint, location.origin).pathname; }
-      catch (_) { return endpoint.split('?')[0]; }
-    })();
+    let requested;
+    try { requested = new URL(endpoint, location.origin); }
+    catch (_) { return []; }
+
     return mappings.filter(x => {
-      try { return new URL(x.endpoint, location.origin).pathname === path; }
-      catch (_) { return x.endpoint.split('?')[0] === path; }
+      let mapped;
+      try { mapped = new URL(x.endpoint, location.origin); }
+      catch (_) { return false; }
+
+      if (mapped.pathname !== requested.pathname) return false;
+
+      // When the authorized entry has a query, require the same query key
+      // before using a source mapping. This prevents a mutating sibling
+      // action on an overloaded CGI from being treated as a read.
+      const requestedKeys = [...requested.searchParams.keys()].sort().join('&');
+      const mappedKeys = [...mapped.searchParams.keys()].sort().join('&');
+      return requestedKeys === mappedKeys;
     });
   };
 
