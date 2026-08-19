@@ -4,6 +4,8 @@ Last reviewed: 2026-08-19
 
 This checklist tracks what has been verified on the current Beacon 3.1 normal-admin session and what remains. It is a planning document, not an authorization to run every listed action.
 
+Public tracking board: [Nokia Beacon 3.1 WebUI Toolkit — Project board](https://github.com/users/KarlAvec1K/projects/2).
+
 ## Status legend
 
 - [x] Complete
