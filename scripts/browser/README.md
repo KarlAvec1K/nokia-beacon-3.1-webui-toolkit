@@ -1,4 +1,4 @@
-# Browser scripts
+# Nokia Beacon 3.1 — Browser Scripts Guide
 
 ## Recommended one-shot workflow
 
