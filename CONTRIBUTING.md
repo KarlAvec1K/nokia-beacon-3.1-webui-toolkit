@@ -4,54 +4,45 @@ Thank you for helping improve the Nokia Beacon 3.1 WebUI Toolkit.
 
 ## Before opening an issue or pull request
 
-- Confirm that the device was yours or that you had explicit authorization.
-- Record firmware/operator context without publishing serial numbers or customer identifiers.
-- Remove tokens, cookies, PSKs, passwords, private MAC addresses, SSIDs, and raw sensitive response bodies.
-- Separate static source evidence, runtime read evidence, and configuration-change evidence.
-- State whether the result was observed on a normal admin session or a verified superadmin session.
+- Confirm owner authorization.
+- Record firmware/operator context without serial numbers or customer identifiers.
+- Remove tokens, cookies, PSKs, passwords, private MACs, SSIDs, and raw sensitive bodies.
+- Separate source evidence, read-only runtime evidence, and configuration-change evidence.
+- State whether the session was normal admin or verified superadmin.
 
 ## Safe research standards
 
-Prefer this order:
+Prefer:
 
 1. passive JavaScript/source inspection;
-2. read-only status requests with response bodies suppressed;
-3. one controlled configuration change only when the purpose and recovery path are clear;
-4. before/after verification using the matching status endpoint.
+2. read-only status requests with bodies suppressed;
+3. one controlled change only when recovery is clear;
+4. before/after verification.
 
-Do not add automated calls for factory reset, reboot, firmware, password changes, deletion, command CGI, GenericService functions with unknown payloads, RRM, Optimize Network, or container lifecycle actions.
+Do not automate factory reset, reboot, firmware, password changes, deletion, command CGI, unknown GenericService functions, RRM, Optimize Network, or container lifecycle actions.
 
-A HTTP 200 response is transport evidence, not proof that a setting was accepted.
+An HTTP 200 response is transport evidence, not proof that a setting was accepted.
+
+## Naming and organization
+
+Follow [the repository naming standard](docs/naming-and-organization.md):
+
+- new files use lowercase kebab-case;
+- dated research uses `YYYY-MM-DD`;
+- stable guides do not use dates;
+- Markdown titles begin with `Nokia Beacon 3.1 —`;
+- scripts use a clear verb/scope/purpose name;
+- existing legacy filenames remain stable unless every reference is updated.
 
 ## Pull requests
 
-A useful pull request should include:
+Include a short summary, device context, safety impact, redacted evidence, documentation updates, and limitations.
 
-- a short summary of the finding or change;
-- exact device/firmware context when relevant;
-- safety impact and whether any request changed configuration;
-- redacted evidence or a reproducible script;
-- documentation updates;
-- limitations and open questions.
+Review checklist:
 
-Keep commits focused. Do not include generated dumps containing secrets.
-
-## Documentation style
-
-Use clear English, stable endpoint names, and explicit labels such as:
-
-- Verified read;
-- Verified writable by normal admin;
-- Frontend mapping only;
-- Ambiguous;
-- Denied;
-- Not tested for safety.
-
-## Review checklist
-
-- [ ] No secrets or private identifiers are included.
-- [ ] The scope is owner-authorized.
-- [ ] Mutating actions are clearly marked.
-- [ ] Read-only claims are supported by status-only evidence.
-- [ ] Firmware-specific behavior is labeled as such.
-- [ ] Relevant Markdown documentation is updated.
+- [ ] No secrets or private identifiers.
+- [ ] Owner-authorized scope.
+- [ ] Mutating actions clearly marked.
+- [ ] Read-only claims supported by status-only evidence.
+- [ ] Firmware-specific behavior labeled.
+- [ ] Relevant documentation updated.
